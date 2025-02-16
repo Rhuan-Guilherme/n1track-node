@@ -1,4 +1,4 @@
-import { UserAlreadyExists } from '@/use-cases/exceptions/user-already-exists-error';
+import { CredentialsInvalidError } from '@/use-cases/exceptions/credentials-invalid-error';
 import { makeAuthenticate } from '@/use-cases/factory/authenticate';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
@@ -24,7 +24,7 @@ export async function authenticateUser(
 
     reply.status(200).send({ token: token });
   } catch (error) {
-    if (error instanceof UserAlreadyExists) {
+    if (error instanceof CredentialsInvalidError) {
       reply.status(400).send({ error: error.message });
     }
   }
