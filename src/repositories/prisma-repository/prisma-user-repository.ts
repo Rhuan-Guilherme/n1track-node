@@ -12,6 +12,16 @@ export class PrismaUserRepository implements UserRepositoryInterface {
 
     return user;
   }
+
+  findById(id: string): Promise<User | null> {
+    const user = prisma.user.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return user;
+  }
   create(data: Prisma.UserCreateInput): Promise<User> {
     const user = prisma.user.create({
       data,
