@@ -26,5 +26,5 @@ model User {
   password   String
   role       Roles    @default(USER)
   created_at DateTime @default(now())
-  is_active  Boolean  @default(false)
+  is_active  Boolean  @default(true)
 }

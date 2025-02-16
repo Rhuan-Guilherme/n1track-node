@@ -17,8 +17,13 @@ export async function authenticateUser(
   try {
     const authenticate = makeAuthenticate();
     const { user } = await authenticate.execute({ email, password });
+
+    if (user.is_active === false) {
+      reply.status(403).send({ error: 'Usuário inativo' });
+    }
+
     const token = await reply.jwtSign(
-      { role: user.role },
+      { role: user.role, is_active: user.is_active },
       { sign: { sub: user.id } }
     );
 
