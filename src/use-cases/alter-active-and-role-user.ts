@@ -1,5 +1,6 @@
 import { UserRepositoryInterface } from '@/repositories/user-repository-interface';
 import { User } from '@prisma/client';
+import { ResourceNotFoundError } from './exceptions/resource-not-foud-error';
 
 interface AlterActiveAndRoleRequest {
   id: string;
@@ -24,6 +25,10 @@ export class AlterActiveAndRoleUseCase {
       is_active,
       role
     );
+
+    if (!user) {
+      throw new ResourceNotFoundError();
+    }
 
     return {
       user,
