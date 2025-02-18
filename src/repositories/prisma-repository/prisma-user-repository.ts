@@ -30,6 +30,14 @@ export class PrismaUserRepository implements UserRepositoryInterface {
     return user;
   }
 
+  async deleteUser(id: string): Promise<void> {
+    await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
   async returnAllUsers(): Promise<Omit<User, 'password'>[]> {
     const users = await prisma.user.findMany({
       orderBy: {

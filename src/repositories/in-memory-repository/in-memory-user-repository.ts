@@ -43,6 +43,12 @@ export class InMemoryUserRepository implements UserRepositoryInterface {
     return user;
   }
 
+  async deleteUser(id: string): Promise<void> {
+    const index = this.user.findIndex((user) => user.id === id);
+
+    this.user.splice(index, 1);
+  }
+
   async returnAllUsers(): Promise<User[]> {
     const user = this.user;
 
