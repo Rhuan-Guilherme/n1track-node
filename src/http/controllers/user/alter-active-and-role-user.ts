@@ -19,7 +19,7 @@ export async function AlterActiveAndRole(
     const authenticate = makealterActiveAndRoleUseCase();
     const { user } = await authenticate.execute({ id, is_active, role });
 
-    reply.status(200).send({ user });
+    reply.status(200).send({ user: { ...user, password: undefined } });
   } catch (error) {
     if (error instanceof ResourceNotFoundError) {
       reply.status(400).send({ error: error.message });

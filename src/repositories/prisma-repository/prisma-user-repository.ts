@@ -30,6 +30,16 @@ export class PrismaUserRepository implements UserRepositoryInterface {
     return user;
   }
 
+  async returnAllUsers(): Promise<User[]> {
+    const users = await prisma.user.findMany({
+      orderBy: {
+        created_at: 'desc',
+      },
+    });
+
+    return users;
+  }
+
   async alterActiveAndRole(
     id: string,
     is_active: boolean,

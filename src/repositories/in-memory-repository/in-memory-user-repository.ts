@@ -43,6 +43,12 @@ export class InMemoryUserRepository implements UserRepositoryInterface {
     return user;
   }
 
+  async returnAllUsers(): Promise<User[]> {
+    const user = this.user;
+
+    return user;
+  }
+
   async alterActiveAndRole(
     id: string,
     is_active: boolean,
