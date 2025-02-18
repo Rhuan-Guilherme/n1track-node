@@ -30,10 +30,18 @@ export class PrismaUserRepository implements UserRepositoryInterface {
     return user;
   }
 
-  async returnAllUsers(): Promise<User[]> {
+  async returnAllUsers(): Promise<Omit<User, 'password'>[]> {
     const users = await prisma.user.findMany({
       orderBy: {
         created_at: 'desc',
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        is_active: true,
+        created_at: true,
       },
     });
 

@@ -1,14 +1,14 @@
 import { beforeAll, describe, expect, test } from 'vitest';
 import { InMemoryUserRepository } from '@/repositories/in-memory-repository/in-memory-user-repository';
-import { ReturnAllUsersUseCase } from '../return-all-users';
+import { GetAllUsersUseCase } from '../get-all-users';
 
 let repository: InMemoryUserRepository;
-let sup: ReturnAllUsersUseCase;
+let sup: GetAllUsersUseCase;
 
 describe('Teste para retorno de usuários em lista', () => {
   beforeAll(() => {
     repository = new InMemoryUserRepository();
-    sup = new ReturnAllUsersUseCase(repository);
+    sup = new GetAllUsersUseCase(repository);
   });
 
   test('Deve ser possível obter dados de todos os usuários cadastrados no sistema.', async () => {
