@@ -3,6 +3,7 @@ import { userRoutes } from './http/controllers/user/router';
 import { ZodError } from 'zod';
 import { env } from './env';
 import fastifyJwt from '@fastify/jwt';
+import { chatGtpIaRoutes } from './http/controllers/chatgtp-ia/router';
 
 export const app = fastify();
 
@@ -14,6 +15,7 @@ app.register(fastifyJwt, {
 });
 
 app.register(userRoutes);
+app.register(chatGtpIaRoutes)
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {

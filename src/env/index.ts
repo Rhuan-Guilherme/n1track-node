@@ -6,6 +6,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string(),
   NODE_ENV: z.enum(['dev', 'test', 'production']).default('dev'),
   JWT_SECRET: z.string(),
+  API_CHATGTP_SECRET: z.string().optional(),
 });
 
 const _env = envSchema.safeParse(process.env);
