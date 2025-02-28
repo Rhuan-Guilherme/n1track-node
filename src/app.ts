@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import { env } from './env';
 import fastifyJwt from '@fastify/jwt';
 import { chatGtpIaRoutes } from './http/controllers/chatgtp-ia/router';
+import fastifyCors from '@fastify/cors';
 
 export const app = fastify();
 
@@ -14,8 +15,13 @@ app.register(fastifyJwt, {
   },
 });
 
+app.register(fastifyCors, {
+  origin: '*',
+  credentials: true,
+});
+
 app.register(userRoutes);
-app.register(chatGtpIaRoutes)
+app.register(chatGtpIaRoutes);
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
