@@ -5,6 +5,7 @@ import { env } from './env';
 import fastifyJwt from '@fastify/jwt';
 import { chatGtpIaRoutes } from './http/controllers/chatgtp-ia/router';
 import fastifyCors from '@fastify/cors';
+import { ticketsRoutes } from './http/controllers/ticket/router';
 
 export const app = fastify();
 
@@ -21,6 +22,7 @@ app.register(fastifyCors, {
 });
 
 app.register(userRoutes);
+app.register(ticketsRoutes);
 app.register(chatGtpIaRoutes);
 
 app.setErrorHandler((error, _, reply) => {
