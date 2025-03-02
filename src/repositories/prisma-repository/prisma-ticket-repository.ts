@@ -10,8 +10,16 @@ export class PrismaTicketRepository implements TicketRepositoryInterface {
 
     return ticket;
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async findById(id: string): Promise<Ticket | null> {
-    throw new Error('Method not implemented.');
+  async findAllById(userId: string): Promise<Ticket[] | null> {
+    const tickets = await prisma.ticket.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        created_at: 'desc',
+      },
+    });
+
+    return tickets;
   }
 }
