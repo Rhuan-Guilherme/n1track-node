@@ -48,6 +48,7 @@ export async function createTicket(
       patrimono,
       ramal,
       informacao,
+      status: 'ABERTO',
       userId: request.user.sub,
       vip,
     });

@@ -9,7 +9,7 @@ export async function getAllTicketsByUser(
   try {
     const getTicketsUseCase = makeGetAllTicketsByUser();
     const tickets = await getTicketsUseCase.execute(request.user.sub);
-    return reply.status(201).send({ tickets });
+    return reply.status(200).send({ tickets });
   } catch (error) {
     if (error instanceof ResourceNotFoundError) {
       reply.status(400).send({ error: error.message });

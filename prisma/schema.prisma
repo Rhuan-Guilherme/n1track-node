@@ -39,6 +39,11 @@ enum Types {
   QUEDA
 }
 
+enum Status {
+  ABERTO
+  FECHADO
+}
+
 model Ticket {
   id String @id @default(uuid())
 
@@ -52,6 +57,7 @@ model Ticket {
   destinatario String
 
   area       String
+  status     Status
   created_at DateTime @default(now())
   type       Types
   vip        Boolean

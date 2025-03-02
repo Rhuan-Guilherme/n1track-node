@@ -16,6 +16,7 @@ interface CreateTicketRequest {
   type: 'CHAMADO' | 'REITERACAO' | 'TRANSFERENCIA' | 'QUEDA';
   vip: boolean;
   userId: string;
+  status: 'ABERTO' | 'FECHADO';
 }
 
 interface CreateTicketResponse {
@@ -41,6 +42,7 @@ export class CreateTicketUseCase {
     vip,
     userId,
     informacao,
+    status,
   }: CreateTicketRequest): Promise<CreateTicketResponse> {
     const user = await this.UserRepository.findById(userId);
 
@@ -59,6 +61,7 @@ export class CreateTicketUseCase {
       ramal,
       type,
       vip,
+      status,
       informacao,
       user: { connect: user },
       userName: user.name,
