@@ -22,4 +22,32 @@ export class PrismaTicketRepository implements TicketRepositoryInterface {
 
     return tickets;
   }
+
+  async deleteTicket(id: string): Promise<void> {
+    await prisma.ticket.delete({
+      where: {
+        id,
+      },
+    });
+  }
+  async alterStatusClose(id: string): Promise<void> {
+    await prisma.ticket.update({
+      where: {
+        id,
+      },
+      data: {
+        status: 'FECHADO',
+      },
+    });
+  }
+  async alterStatusOpen(id: string): Promise<void> {
+    await prisma.ticket.update({
+      where: {
+        id,
+      },
+      data: {
+        status: 'ABERTO',
+      },
+    });
+  }
 }
