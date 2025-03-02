@@ -10,6 +10,7 @@ interface CreateTicketRequest {
   local: string;
   patrimono: string;
   chamado: string;
+  informacao: string;
   destinatario: string;
   area: string;
   type: 'CHAMADO' | 'REITERACAO' | 'TRANSFERENCIA' | 'QUEDA';
@@ -39,6 +40,7 @@ export class CreateTicketUseCase {
     type,
     vip,
     userId,
+    informacao,
   }: CreateTicketRequest): Promise<CreateTicketResponse> {
     const user = await this.UserRepository.findById(userId);
 
@@ -57,6 +59,7 @@ export class CreateTicketUseCase {
       ramal,
       type,
       vip,
+      informacao,
       user: { connect: user },
       userName: user.name,
     });

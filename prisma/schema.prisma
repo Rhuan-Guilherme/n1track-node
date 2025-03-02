@@ -46,6 +46,7 @@ model Ticket {
   login        String
   ramal        String
   local        String
+  informacao   String
   patrimono    String
   chamado      String
   destinatario String

@@ -13,6 +13,7 @@ export async function createTicket(
     ramal: z.string().optional().default(''),
     local: z.string().optional().default(''),
     patrimono: z.string().optional().default(''),
+    informacao: z.string().optional().default(''),
     chamado: z.string().optional().default(''),
     destinatario: z.string().optional().default(''),
     area: z.string().optional().default(''),
@@ -31,6 +32,7 @@ export async function createTicket(
     patrimono,
     ramal,
     type,
+    informacao,
   } = ticketSchema.parse(request.body);
 
   try {
@@ -45,10 +47,10 @@ export async function createTicket(
       name,
       patrimono,
       ramal,
+      informacao,
       userId: request.user.sub,
       vip,
     });
-    console.log(ticket);
 
     return reply.status(201).send({ ticket });
   } catch (error) {
