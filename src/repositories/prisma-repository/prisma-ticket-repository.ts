@@ -10,6 +10,21 @@ export class PrismaTicketRepository implements TicketRepositoryInterface {
 
     return ticket;
   }
+
+  async updateTicket(
+    id: string,
+    data: Prisma.TicketUpdateInput
+  ): Promise<Ticket> {
+    const ticket = await prisma.ticket.update({
+      where: {
+        id,
+      },
+      data,
+    });
+
+    return ticket;
+  }
+
   async findAllById(userId: string): Promise<Ticket[] | null> {
     const tickets = await prisma.ticket.findMany({
       where: {
