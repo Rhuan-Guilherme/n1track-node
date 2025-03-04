@@ -70,12 +70,13 @@ model Ticket {
 }
 
 model StfUsers {
-  id       String @id @default(uuid())
-  login    String @unique
+  id       String  @id @default(uuid())
+  login    String  @unique
   name     String
   cargo    String
   area     String
   telefone String
+  vip      Boolean @default(false)
 
   @@map("stfusers")
 }
