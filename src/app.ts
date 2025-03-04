@@ -18,7 +18,7 @@ app.register(fastifyJwt, {
 });
 
 app.register(fastifyCors, {
-  origin: 'http://localhost:5173',
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Authorization', 'Content-Type', 'Origin'],
   credentials: true,
