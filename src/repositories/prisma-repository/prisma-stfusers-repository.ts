@@ -16,4 +16,26 @@ export class PrismaStfUsersRepository implements StfUsersRepositoryInterface {
 
     return users;
   }
+
+  async alterVip(id: string): Promise<void> {
+    await prisma.stfUsers.update({
+      where: {
+        id,
+      },
+      data: {
+        vip: true,
+      },
+    });
+  }
+
+  async removeVip(id: string): Promise<void> {
+    await prisma.stfUsers.update({
+      where: {
+        id,
+      },
+      data: {
+        vip: false,
+      },
+    });
+  }
 }
