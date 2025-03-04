@@ -2,6 +2,7 @@
   "name": "n1track-node",
   "version": "1.0.0",
   "main": "index.js",
+  "types": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsup src",
