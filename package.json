@@ -11,6 +11,7 @@
     "build": "tsup src",
     "start": "node dist/server.js",
     "test": "vitest run --dir src/use-cases",
+    "importcsv": "node ./prisma/importSqlData.js",
     "lint": "eslint src"
   },
   "keywords": [],
