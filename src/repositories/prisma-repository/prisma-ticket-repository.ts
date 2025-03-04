@@ -33,6 +33,7 @@ export class PrismaTicketRepository implements TicketRepositoryInterface {
       orderBy: {
         created_at: 'desc',
       },
+      take: 100,
     });
 
     return tickets;
