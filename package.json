@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "types": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsup src",
