@@ -30,12 +30,16 @@ export class PrismaTicketRepository implements TicketRepositoryInterface {
     isDeleted?: boolean,
     vip?: boolean,
     open?: boolean,
-    close?: boolean
+    close?: boolean,
+    type?: 'CHAMADO' | 'REITERACAO' | 'TRANSFERENCIA' | 'QUEDA'
   ): Promise<Ticket[] | null> {
+    console.log(type);
+
     const tickets = await prisma.ticket.findMany({
       where: {
         vip,
         userId,
+        type,
         isDeleted: isDeleted ? true : false,
         status:
           open && close

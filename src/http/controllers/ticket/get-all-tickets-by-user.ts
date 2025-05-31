@@ -15,9 +15,12 @@ export async function getAllTicketsByUser(
       vip: z.coerce.boolean().optional(),
       open: z.coerce.boolean().optional(),
       close: z.coerce.boolean().optional(),
+      type: z
+        .enum(['CHAMADO', 'REITERACAO', 'TRANSFERENCIA', 'QUEDA'])
+        .optional(),
     });
 
-    const { isDeleted, vip, open, close } =
+    const { isDeleted, vip, open, close, type } =
       getTicketsSchema.parse(queryGetTickets);
 
     const getTicketsUseCase = makeGetAllTicketsByUser();
@@ -26,7 +29,8 @@ export async function getAllTicketsByUser(
       isDeleted,
       vip,
       open,
-      close
+      close,
+      type
     );
     return reply.status(200).send({ tickets });
   } catch (error) {

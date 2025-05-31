@@ -8,7 +8,8 @@ export interface TicketRepositoryInterface {
     isDeleted?: boolean,
     vip?: boolean,
     open?: boolean,
-    close?: boolean
+    close?: boolean,
+    type?: 'CHAMADO' | 'REITERACAO' | 'TRANSFERENCIA' | 'QUEDA'
   ): Promise<Ticket[] | null>;
   deleteTicket(id: string): Promise<void>;
   alterStatusClose(id: string): Promise<void>;

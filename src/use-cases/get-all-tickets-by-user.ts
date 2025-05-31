@@ -9,14 +9,16 @@ export class GetAllTicketsByUserUseCase {
     isDeleted?: boolean,
     vip?: boolean,
     open?: boolean,
-    close?: boolean
+    close?: boolean,
+    type?: 'CHAMADO' | 'REITERACAO' | 'TRANSFERENCIA' | 'QUEDA'
   ) {
     const tickets = await this.TicketRepository.findAllById(
       userId,
       isDeleted,
       vip,
       open,
-      close
+      close,
+      type
     );
 
     if (!tickets) {
