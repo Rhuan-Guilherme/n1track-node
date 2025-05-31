@@ -25,11 +25,14 @@ export class PrismaTicketRepository implements TicketRepositoryInterface {
     return ticket;
   }
 
-  async findAllById(userId: string): Promise<Ticket[] | null> {
+  async findAllById(
+    userId: string,
+    isDeleted: boolean
+  ): Promise<Ticket[] | null> {
     const tickets = await prisma.ticket.findMany({
       where: {
         userId,
-        isDeleted: false,
+        isDeleted: isDeleted,
       },
       orderBy: {
         created_at: 'desc',
