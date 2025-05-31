@@ -13,15 +13,20 @@ export async function getAllTicketsByUser(
     const getTicketsSchema = z.object({
       isDeleted: z.coerce.boolean().optional(),
       vip: z.coerce.boolean().optional(),
+      open: z.coerce.boolean().optional(),
+      close: z.coerce.boolean().optional(),
     });
 
-    const { isDeleted, vip } = getTicketsSchema.parse(queryGetTickets);
+    const { isDeleted, vip, open, close } =
+      getTicketsSchema.parse(queryGetTickets);
 
     const getTicketsUseCase = makeGetAllTicketsByUser();
     const tickets = await getTicketsUseCase.execute(
       request.user.sub,
       isDeleted,
-      vip
+      vip,
+      open,
+      close
     );
     return reply.status(200).send({ tickets });
   } catch (error) {

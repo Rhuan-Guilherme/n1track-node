@@ -6,7 +6,9 @@ export interface TicketRepositoryInterface {
   findAllById(
     userId: string,
     isDeleted?: boolean,
-    vip?: boolean
+    vip?: boolean,
+    open?: boolean,
+    close?: boolean
   ): Promise<Ticket[] | null>;
   deleteTicket(id: string): Promise<void>;
   alterStatusClose(id: string): Promise<void>;
