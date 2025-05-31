@@ -9,19 +9,19 @@ export async function getAllTicketsByUser(
 ) {
   try {
     const queryGetTickets = request.query;
-    console.log(request.query);
 
     const getTicketsSchema = z.object({
-      isDeleted: z.coerce.boolean(),
+      isDeleted: z.coerce.boolean().optional(),
+      vip: z.coerce.boolean().optional(),
     });
 
-    const { isDeleted } = getTicketsSchema.parse(queryGetTickets);
-    console.log(isDeleted);
+    const { isDeleted, vip } = getTicketsSchema.parse(queryGetTickets);
 
     const getTicketsUseCase = makeGetAllTicketsByUser();
     const tickets = await getTicketsUseCase.execute(
       request.user.sub,
-      isDeleted
+      isDeleted,
+      vip
     );
     return reply.status(200).send({ tickets });
   } catch (error) {

@@ -4,8 +4,12 @@ import { ResourceNotFoundError } from './exceptions/resource-not-foud-error';
 export class GetAllTicketsByUserUseCase {
   constructor(private TicketRepository: TicketRepositoryInterface) {}
 
-  async execute(userId: string, isDeleted: boolean) {
-    const tickets = await this.TicketRepository.findAllById(userId, isDeleted);
+  async execute(userId: string, isDeleted?: boolean, vip?: boolean) {
+    const tickets = await this.TicketRepository.findAllById(
+      userId,
+      isDeleted,
+      vip
+    );
 
     if (!tickets) {
       throw new ResourceNotFoundError();
