@@ -62,9 +62,10 @@ model Ticket {
   type       Types
   vip        Boolean
 
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
-  userName String
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  userName  String
+  isDeleted Boolean @default(false)
 
   @@map("tickets")
 }

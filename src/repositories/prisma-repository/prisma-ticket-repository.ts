@@ -29,6 +29,7 @@ export class PrismaTicketRepository implements TicketRepositoryInterface {
     const tickets = await prisma.ticket.findMany({
       where: {
         userId,
+        isDeleted: false,
       },
       orderBy: {
         created_at: 'desc',
@@ -40,7 +41,10 @@ export class PrismaTicketRepository implements TicketRepositoryInterface {
   }
 
   async deleteTicket(id: string): Promise<void> {
-    await prisma.ticket.delete({
+    await prisma.ticket.update({
+      data: {
+        isDeleted: true,
+      },
       where: {
         id,
       },
