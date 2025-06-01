@@ -12,6 +12,7 @@ export interface TicketRepositoryInterface {
     type?: 'CHAMADO' | 'REITERACAO' | 'TRANSFERENCIA' | 'QUEDA'
   ): Promise<Ticket[] | null>;
   deleteTicket(id: string): Promise<void>;
+  restoreTicket(id: string): Promise<void>;
   alterStatusClose(id: string): Promise<void>;
   alterStatusOpen(id: string): Promise<void>;
 }

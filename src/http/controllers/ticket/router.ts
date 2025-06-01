@@ -6,6 +6,7 @@ import { statusCloseTicket } from './status-close-ticket';
 import { statusOpenTicket } from './status-open-ticket';
 import { deleteTicket } from './delete-ticket';
 import { updateTicket } from './update-ticket';
+import { restoreTicket } from './restore-ticket';
 
 export function ticketsRoutes(app: FastifyInstance) {
   app.post('/ticket/create', { onRequest: [JWTVerify] }, createTicket);
@@ -13,5 +14,6 @@ export function ticketsRoutes(app: FastifyInstance) {
   app.patch('/ticket/close/:id', { onRequest: [JWTVerify] }, statusCloseTicket);
   app.patch('/ticket/open/:id', { onRequest: [JWTVerify] }, statusOpenTicket);
   app.delete('/ticket/delete/:id', { onRequest: [JWTVerify] }, deleteTicket);
+  app.patch('/ticket/restore/:id', { onRequest: [JWTVerify] }, restoreTicket);
   app.put('/ticket/update/:id', { onRequest: [JWTVerify] }, updateTicket);
 }

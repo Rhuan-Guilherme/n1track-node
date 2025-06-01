@@ -69,6 +69,18 @@ export class PrismaTicketRepository implements TicketRepositoryInterface {
       },
     });
   }
+
+  async restoreTicket(id: string): Promise<void> {
+    await prisma.ticket.update({
+      data: {
+        isDeleted: false,
+      },
+      where: {
+        id,
+      },
+    });
+  }
+
   async alterStatusClose(id: string): Promise<void> {
     await prisma.ticket.update({
       where: {
