@@ -6,9 +6,9 @@ export async function getCritical(
   reply: FastifyReply
 ) {
   try {
-    const critical = makeGetCritical();
-    const response = await critical.execute();
-    return reply.status(201).send(response);
+    const criticalUseCase = makeGetCritical();
+    const { critical } = await criticalUseCase.execute();
+    return reply.status(201).send(critical);
   } catch (error) {
     reply.status(400).send({ error });
   }
