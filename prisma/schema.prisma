@@ -81,3 +81,10 @@ model StfUsers {
 
   @@map("stfusers")
 }
+
+model Critical {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  link        String
+}
