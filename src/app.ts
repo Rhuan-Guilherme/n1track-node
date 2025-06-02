@@ -8,6 +8,7 @@ import fastifyCors from '@fastify/cors';
 import { ticketsRoutes } from './http/controllers/ticket/router';
 import { stfUsersRoutes } from './http/controllers/stfUsers/router';
 import { criticalRoutes } from './http/controllers/critical.ts/router';
+import { bindRoutes } from './http/controllers/binds/router';
 
 export const app = fastify();
 
@@ -30,6 +31,7 @@ app.register(ticketsRoutes);
 app.register(stfUsersRoutes);
 app.register(chatGtpIaRoutes);
 app.register(criticalRoutes);
+app.register(bindRoutes);
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {

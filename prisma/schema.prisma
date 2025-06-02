@@ -88,3 +88,11 @@ model Critical {
   description String
   link        String
 }
+
+model Bind {
+  id          String @id @default(uuid())
+  title       String
+  description String
+
+  @@map("binds")
+}
