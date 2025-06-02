@@ -14,5 +14,14 @@ export interface TicketRepositoryInterface {
   deleteTicket(id: string): Promise<void>;
   restoreTicket(id: string): Promise<void>;
   alterStatusClose(id: string): Promise<void>;
+  performaceUser(
+    id: string
+  ): Promise<{
+    total: number;
+    chamado: number;
+    reiteracao: number;
+    transferencia: number;
+    queda: number;
+  }>;
   alterStatusOpen(id: string): Promise<void>;
 }
