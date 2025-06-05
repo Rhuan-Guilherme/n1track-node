@@ -11,8 +11,21 @@ export class PrismaBindsRepostiory implements BindRepositoryInterface {
     return bind;
   }
 
-  async getBinds(): Promise<Bind[] | null> {
-    const binds = await prisma.bind.findMany();
+  async getBinds(query?: string): Promise<Bind[] | null> {
+    let binds;
+    if (query) {
+      binds = await prisma.bind.findMany({
+        where: {
+          OR: [{ title: { contains: query, mode: 'insensitive' } }],
+        },
+        orderBy: {
+          title: 'asc',
+        },
+        take: 10,
+      });
+    } else {
+      binds = await prisma.bind.findMany();
+    }
 
     return binds;
   }
