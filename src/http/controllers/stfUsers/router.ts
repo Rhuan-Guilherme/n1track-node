@@ -3,6 +3,7 @@ import { FastifyInstance } from 'fastify';
 import { findStfusers } from './find-stfusers';
 import { alterStfusersVip } from './alter-stfuser-vip';
 import { removeStfusersVip } from './remove-stfuser-vip';
+import { updateStfusers } from './update-stf-user';
 
 export function stfUsersRoutes(app: FastifyInstance) {
   app.get('/stfusers/:params', { onRequest: [JWTVerify] }, findStfusers);
@@ -12,4 +13,5 @@ export function stfUsersRoutes(app: FastifyInstance) {
     { onRequest: [JWTVerify] },
     removeStfusersVip
   );
+  app.put('/stfusers/update/:id', updateStfusers);
 }

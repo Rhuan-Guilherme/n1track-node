@@ -1,4 +1,4 @@
-import { StfUsers } from '@prisma/client';
+import { Prisma, StfUsers } from '@prisma/client';
 import { StfUsersRepositoryInterface } from '../stfusers-repository-interface';
 import { prisma } from '@/lib/prisma';
 
@@ -15,6 +15,20 @@ export class PrismaStfUsersRepository implements StfUsersRepositoryInterface {
     });
 
     return users;
+  }
+
+  async updateUser(
+    id: string,
+    user: Prisma.StfUsersUpdateInput
+  ): Promise<StfUsers> {
+    const userProps = await prisma.stfUsers.update({
+      where: {
+        id,
+      },
+      data: user,
+    });
+
+    return userProps;
   }
 
   async alterVip(id: string): Promise<void> {
