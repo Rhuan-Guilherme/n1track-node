@@ -6,4 +6,5 @@ export interface StfUsersRepositoryInterface {
   alterVip(id: string): Promise<void>;
   removeVip(id: string): Promise<void>;
   allTicketsStfUsers(): Promise<unknown>;
+  allTicketsStfUsersMonth(): Promise<unknown>;
 }

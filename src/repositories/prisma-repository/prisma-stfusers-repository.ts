@@ -84,4 +84,39 @@ export class PrismaStfUsersRepository implements StfUsersRepositoryInterface {
       throw error;
     }
   }
+
+  async allTicketsStfUsersMonth(): Promise<
+    { login: string; name: string; area: string; count: number }[]
+  > {
+    try {
+      const result = await prisma.$queryRaw<
+        Array<{ login: string; name: string; area: string; count: number }>
+      >`
+    SELECT 
+      s.login, 
+      s.name, 
+      s.area,
+      COUNT(t.id) AS count
+    FROM stfusers s
+    LEFT JOIN tickets t 
+      ON t.login = s.login 
+     AND t.created_at >= DATE_TRUNC('month', CURRENT_DATE)
+     AND t.created_at < DATE_TRUNC('month', CURRENT_DATE + INTERVAL '1 month')
+    GROUP BY s.login, s.name, s.area
+    HAVING COUNT(t.id) > 0
+    ORDER BY count DESC
+    LIMIT 10
+  `;
+
+      const parsedResult = result.map((r) => ({
+        ...r,
+        count: Number(r.count),
+      }));
+
+      return parsedResult;
+    } catch (error) {
+      console.error('Erro na query raw:', error);
+      throw error;
+    }
+  }
 }
