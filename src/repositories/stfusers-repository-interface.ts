@@ -5,4 +5,5 @@ export interface StfUsersRepositoryInterface {
   updateUser(id: string, user: Prisma.StfUsersUpdateInput): Promise<StfUsers>;
   alterVip(id: string): Promise<void>;
   removeVip(id: string): Promise<void>;
+  allTicketsStfUsers(): Promise<unknown>;
 }

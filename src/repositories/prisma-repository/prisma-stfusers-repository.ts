@@ -52,4 +52,36 @@ export class PrismaStfUsersRepository implements StfUsersRepositoryInterface {
       },
     });
   }
+
+  async allTicketsStfUsers(): Promise<
+    { login: string; name: string; area: string; count: number }[]
+  > {
+    try {
+      const result = await prisma.$queryRaw<
+        Array<{ login: string; name: string; area: string; count: number }>
+      >`
+       SELECT 
+        s.login, 
+        s.name, 
+        s.area,
+        CAST(COUNT(t.id) AS INTEGER) AS count
+      FROM stfusers s
+      LEFT JOIN tickets t ON t.login = s.login
+      GROUP BY s.login, s.name, s.area
+      HAVING COUNT(t.id) > 0
+      ORDER BY count DESC
+      LIMIT 10
+    `;
+
+      const parsedResult = result.map((r) => ({
+        ...r,
+        count: Number(r.count),
+      }));
+
+      return parsedResult;
+    } catch (error) {
+      console.error('Erro na query raw:', error);
+      throw error;
+    }
+  }
 }

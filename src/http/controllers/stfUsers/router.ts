@@ -4,6 +4,7 @@ import { findStfusers } from './find-stfusers';
 import { alterStfusersVip } from './alter-stfuser-vip';
 import { removeStfusersVip } from './remove-stfuser-vip';
 import { updateStfusers } from './update-stf-user';
+import { returnTopStfUsers } from './return-top-stf-users';
 
 export function stfUsersRoutes(app: FastifyInstance) {
   app.get('/stfusers/:params', { onRequest: [JWTVerify] }, findStfusers);
@@ -14,4 +15,5 @@ export function stfUsersRoutes(app: FastifyInstance) {
     removeStfusersVip
   );
   app.put('/stfusers/update/:id', updateStfusers);
+  app.get('/stfusers/topusers', returnTopStfUsers);
 }
