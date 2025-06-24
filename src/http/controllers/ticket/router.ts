@@ -8,6 +8,7 @@ import { deleteTicket } from './delete-ticket';
 import { updateTicket } from './update-ticket';
 import { restoreTicket } from './restore-ticket';
 import { getPerformaceUser } from './get-performace-user';
+import { getAllTicketsMetrics } from './all-tickets-metrics';
 
 export function ticketsRoutes(app: FastifyInstance) {
   app.post('/ticket/create', { onRequest: [JWTVerify] }, createTicket);
@@ -18,4 +19,5 @@ export function ticketsRoutes(app: FastifyInstance) {
   app.delete('/ticket/delete/:id', { onRequest: [JWTVerify] }, deleteTicket);
   app.patch('/ticket/restore/:id', { onRequest: [JWTVerify] }, restoreTicket);
   app.put('/ticket/update/:id', { onRequest: [JWTVerify] }, updateTicket);
+  app.get('/ticket/metrics', getAllTicketsMetrics);
 }

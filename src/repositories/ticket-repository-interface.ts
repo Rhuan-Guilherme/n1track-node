@@ -3,6 +3,7 @@ import { Prisma, Ticket } from '@prisma/client';
 export interface TicketRepositoryInterface {
   create(data: Prisma.TicketCreateInput): Promise<Ticket>;
   updateTicket(id: string, data: Prisma.TicketUpdateInput): Promise<Ticket>;
+  allTicketsMetrics(): Promise<unknown>;
   findAllById(
     userId: string,
     isDeleted?: boolean,
@@ -14,9 +15,7 @@ export interface TicketRepositoryInterface {
   deleteTicket(id: string): Promise<void>;
   restoreTicket(id: string): Promise<void>;
   alterStatusClose(id: string): Promise<void>;
-  performaceUser(
-    id: string
-  ): Promise<{
+  performaceUser(id: string): Promise<{
     total: number;
     chamado: number;
     reiteracao: number;

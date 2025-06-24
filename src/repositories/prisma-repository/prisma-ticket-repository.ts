@@ -11,6 +11,26 @@ export class PrismaTicketRepository implements TicketRepositoryInterface {
     return ticket;
   }
 
+  async allTicketsMetrics(): Promise<
+    { id: string; name: string; email: string; ticketCount: number }[]
+  > {
+    const result = await prisma.$queryRaw<
+      Array<{ id: string; name: string; email: string; ticketCount: number }>
+    >`
+    SELECT 
+      u.id,
+      u.name,
+      u.email,
+      CAST(COUNT(t.id) AS INTEGER) AS ticketCount
+    FROM users u
+    LEFT JOIN tickets t ON t."userId" = u.id AND t."isDeleted" = false
+    GROUP BY u.id, u.name, u.email
+    ORDER BY ticketCount DESC
+  `;
+
+    return result;
+  }
+
   async updateTicket(
     id: string,
     data: Prisma.TicketUpdateInput
