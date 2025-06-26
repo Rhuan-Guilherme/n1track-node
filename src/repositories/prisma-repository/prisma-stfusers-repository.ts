@@ -3,6 +3,13 @@ import { StfUsersRepositoryInterface } from '../stfusers-repository-interface';
 import { prisma } from '@/lib/prisma';
 
 export class PrismaStfUsersRepository implements StfUsersRepositoryInterface {
+  async create(data: Prisma.StfUsersCreateInput): Promise<StfUsers> {
+    const stfUser = await prisma.stfUsers.create({
+      data,
+    });
+
+    return stfUser;
+  }
   async findUsers(params: string): Promise<StfUsers[]> {
     const users = await prisma.stfUsers.findMany({
       where: {
@@ -15,6 +22,20 @@ export class PrismaStfUsersRepository implements StfUsersRepositoryInterface {
     });
 
     return users;
+  }
+
+  async findByLogin(login: string): Promise<StfUsers | null> {
+    const stfUser = await prisma.stfUsers.findFirst({
+      where: {
+        login,
+      },
+    });
+
+    if (!stfUser) {
+      return null;
+    }
+
+    return stfUser;
   }
 
   async updateUser(
