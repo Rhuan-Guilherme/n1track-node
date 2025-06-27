@@ -2,19 +2,31 @@ import axios from 'axios';
 import { env } from 'process';
 
 export async function formatTextApi(text: string) {
-  const prompt = `
-  Você é um assistente que melhora textos e os deixa mais formais. Todas as frases devem começar com gerúndios como "informando", "solicitando" e assim por diante, e devem parecer como se estivessem sendo passadas de uma pessoa para outra equipe, informando algo. Não altere o sentido da frase, apenas a torne mais formal e ajuste a gramática. As frases devem começar com letra minúscula.
+  const sanitizedText = text.trim().slice(0, 2000); // Limita tamanho para evitar exceder tokens
 
-  Melhore bem o seguinte texto: "${text}". OBS: sempre com letra minuscula no começo da frase, e não mude o sentido da frase, apenas deixe mais formal e ajuste a gramatica.  
-  `;
+  const prompt = `
+Você é um assistente de comunicação formal.
+
+Objetivo: reescreva o texto a seguir em um tom formal, como se fosse direcionado de um colaborador a uma equipe técnica. As frases devem:
+- Iniciar com verbos no gerúndio (ex: "informando", "solicitando", "relatando").
+- Usar sempre letra **minúscula** no início de cada frase.
+- Manter **exatamente o mesmo sentido original**, apenas corrigindo gramática e formalizando o tom.
+- Evitar adicionar ou remover qualquer informação.
+
+Texto original:
+"""
+${sanitizedText}
+"""
+`;
 
   try {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'system', content: prompt }],
-        max_tokens: 300,
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 400,
+        temperature: 0.3,
       },
       {
         headers: {
@@ -23,9 +35,15 @@ export async function formatTextApi(text: string) {
         },
       }
     );
-    return response.data.choices[0].message.content;
-  } catch (error) {
-    console.error('Erro na requisição:', error);
-    return null;
+    return (
+      response.data.choices?.[0]?.message?.content?.trim() ?? '[Sem resposta]'
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.error(
+      'Erro na formatação do texto:',
+      error.response?.data || error.message
+    );
+    return '[Erro ao processar o texto]';
   }
 }
