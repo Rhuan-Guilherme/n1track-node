@@ -16,8 +16,12 @@ export function stfUsersRoutes(app: FastifyInstance) {
     { onRequest: [JWTVerify] },
     removeStfusersVip
   );
-  app.put('/stfusers/update/:id', updateStfusers);
-  app.get('/stfusers/topusers', returnTopStfUsers);
-  app.get('/stfusers/topusers/month', returnTopStfUsersMonth);
-  app.post('/stfusers', createStfUser);
+  app.put('/stfusers/update/:id', { onRequest: [JWTVerify] }, updateStfusers);
+  app.get('/stfusers/topusers', { onRequest: [JWTVerify] }, returnTopStfUsers);
+  app.get(
+    '/stfusers/topusers/month',
+    { onRequest: [JWTVerify] },
+    returnTopStfUsersMonth
+  );
+  app.post('/stfusers', { onRequest: [JWTVerify] }, createStfUser);
 }

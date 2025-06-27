@@ -19,5 +19,5 @@ export function ticketsRoutes(app: FastifyInstance) {
   app.delete('/ticket/delete/:id', { onRequest: [JWTVerify] }, deleteTicket);
   app.patch('/ticket/restore/:id', { onRequest: [JWTVerify] }, restoreTicket);
   app.put('/ticket/update/:id', { onRequest: [JWTVerify] }, updateTicket);
-  app.get('/ticket/metrics', getAllTicketsMetrics);
+  app.get('/ticket/metrics', { onRequest: [JWTVerify] }, getAllTicketsMetrics);
 }
