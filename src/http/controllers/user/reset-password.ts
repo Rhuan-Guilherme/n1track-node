@@ -22,7 +22,7 @@ export async function resetPassword(
   });
 
   if (!user)
-    return reply.status(404).send({ error: 'Usuário não encontrado!' });
+    return reply.status(404).send({ error: 'Usuário não encontrado!!' });
 
   try {
     const resetCode = await prisma.passowrdResetCode.findFirst({
