@@ -7,10 +7,14 @@ import { AlterActiveAndRole } from './alter-active-and-role-user';
 import { RoleVerify } from '@/http/middlewares/role-verify';
 import { getAllUsers } from './get-all-users';
 import { deleteUsers } from './delete-user';
+import { forgotPassword } from './forgot-password';
+import { resetPassword } from './reset-password';
 
 export function userRoutes(app: FastifyInstance) {
   app.post('/user', createUser);
   app.post('/session', authenticateUser);
+  app.post('/forgot/password', forgotPassword);
+  app.post('/reset/password', resetPassword);
   app.get('/profile', { onRequest: [JWTVerify] }, getUser);
   app.delete(
     '/deleteuser/:id',

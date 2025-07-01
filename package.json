@@ -23,10 +23,12 @@
     "@fastify/cors": "^11.0.0",
     "@fastify/jwt": "^9.0.4",
     "@prisma/client": "^6.3.1",
+    "@types/nodemailer": "^6.4.17",
     "axios": "^1.8.1",
     "bcryptjs": "^3.0.0",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.1",
+    "nodemailer": "^7.0.4",
     "zod": "^3.24.2"
   },
   "devDependencies": {
