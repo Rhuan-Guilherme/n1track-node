@@ -20,16 +20,29 @@ enum Roles {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  name       String
-  email      String   @unique
-  password   String
-  role       Roles    @default(USER)
-  created_at DateTime @default(now())
-  is_active  Boolean  @default(true)
-  Tickets    Ticket[]
+  id                String              @id @default(uuid())
+  name              String
+  email             String              @unique
+  password          String
+  role              Roles               @default(USER)
+  created_at        DateTime            @default(now())
+  is_active         Boolean             @default(true)
+  Tickets           Ticket[]
+  PassowrdResetCode PassowrdResetCode[]
 
   @@map("users")
+}
+
+model PassowrdResetCode {
+  is        String   @id @default(uuid())
+  code      String
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("password_reset_code")
 }
 
 enum Types {
