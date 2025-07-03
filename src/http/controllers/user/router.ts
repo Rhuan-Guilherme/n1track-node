@@ -26,7 +26,7 @@ export function userRoutes(app: FastifyInstance) {
     { onRequest: [JWTVerify, RoleVerify('ADMIN')] },
     getAllUsers
   );
-  app.post(
+  app.patch(
     '/alteruser',
     { onRequest: [JWTVerify, RoleVerify('ADMIN')] },
     AlterActiveAndRole

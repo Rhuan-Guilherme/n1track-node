@@ -8,7 +8,7 @@ export async function getAllUsers(
   try {
     const getUsers = makeGetAllUsers();
     const users = await getUsers.execute();
-    reply.status(200).send(users);
+    reply.status(200).send({ users });
   } catch (error) {
     reply.status(500).send({ message: 'internal server error', error: error });
   }
