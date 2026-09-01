@@ -9,6 +9,7 @@ const envSchema = z.object({
   API_CHATGTP_SECRET: z.string().optional(),
   RESEND_API_KEY: z.string().min(1),
   RESEND_FROM_EMAIL: z.string().min(1),
+  FRONTEND_URL: z.string().url(),
 });
 
 const _env = envSchema.safeParse(process.env);
