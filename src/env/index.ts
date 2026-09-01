@@ -7,6 +7,8 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['dev', 'test', 'production']).default('dev'),
   JWT_SECRET: z.string(),
   API_CHATGTP_SECRET: z.string().optional(),
+  RESEND_API_KEY: z.string().min(1),
+  RESEND_FROM_EMAIL: z.string().min(1),
 });
 
 const _env = envSchema.safeParse(process.env);
