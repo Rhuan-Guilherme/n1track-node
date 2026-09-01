@@ -30,6 +30,8 @@ export async function forgotPassword(
 
   const code = randomInt(100000, 1000000).toString();
   const codeHash = await hash(code, 10);
+  const resetUrl = new URL('/reset-password', env.FRONTEND_URL);
+  resetUrl.searchParams.set('email', user.email);
   let resetCodeId: string | undefined;
 
   try {
@@ -52,8 +54,8 @@ export async function forgotPassword(
       from: env.RESEND_FROM_EMAIL,
       to: user.email,
       subject: 'Código para redefinir sua senha no N1Track',
-      text: `Seu código para redefinir a senha é ${code}. Ele expira em 10 minutos.`,
-      html: `<div style="font-family:Arial,sans-serif;color:#18181b"><h2>Redefinição de senha</h2><p>Use o código abaixo para criar uma nova senha no N1Track:</p><p style="font-size:32px;font-weight:700;letter-spacing:8px;margin:24px 0">${code}</p><p>O código expira em 10 minutos e só pode ser usado uma vez.</p><p>Se você não solicitou a troca, ignore este e-mail.</p></div>`,
+      text: `Acesse ${resetUrl.toString()} para redefinir sua senha. Seu código é ${code} e expira em 10 minutos.`,
+      html: `<div style="font-family:Arial,sans-serif;color:#18181b;max-width:560px"><h2>Redefinição de senha</h2><p>Recebemos uma solicitação para redefinir sua senha no N1Track.</p><p><a href="${resetUrl.toString()}" style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px">Redefinir minha senha</a></p><p>Na página, informe o código abaixo:</p><p style="font-size:32px;font-weight:700;letter-spacing:8px;margin:24px 0">${code}</p><p>O código expira em 10 minutos e só pode ser usado uma vez.</p><p>Se você não solicitou a troca, ignore este e-mail.</p></div>`,
     });
 
     if (error) throw new Error(`Resend: ${error.message}`);
