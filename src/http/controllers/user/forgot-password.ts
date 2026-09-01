@@ -1,7 +1,13 @@
+import { env } from '@/env';
 import { prisma } from '@/lib/prisma';
+import { resend } from '@/lib/resend';
+import { hash } from 'bcryptjs';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { randomInt } from 'node:crypto';
 import { z } from 'zod';
-import nodemailer from 'nodemailer';
+
+const successMessage =
+  'Se o e-mail estiver cadastrado, você receberá um código de recuperação.';
 
 export async function forgotPassword(
   request: FastifyRequest,
@@ -12,54 +18,57 @@ export async function forgotPassword(
   });
 
   const { email } = emailSchema.parse(request.body);
-
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    service: 'gmail',
-    port: 465,
-    secure: true,
-    auth: {
-      user: 'rhuan23032004@gmail.com',
-      pass: 'kcad kwmi hrxy wish',
-    },
-  });
+  const normalizedEmail = email.trim().toLowerCase();
 
   const user = await prisma.user.findFirst({
     where: {
-      email,
+      email: normalizedEmail,
     },
   });
 
-  if (!user)
-    return reply.status(404).send({ error: 'Usuário não encontrado!' });
+  if (!user) return reply.status(200).send({ message: successMessage });
 
-  const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6 dígitos
+  const code = randomInt(100000, 1000000).toString();
+  const codeHash = await hash(code, 10);
+  let resetCodeId: string | undefined;
 
   try {
-    await prisma.passowrdResetCode.create({
-      data: {
-        userId: user.id,
-        code,
-        expiresAt: new Date(Date.now() + 1000 * 60 * 10), // 10 min
-      },
-    });
+    const resetCode = await prisma.$transaction(async (transaction) => {
+      await transaction.passowrdResetCode.deleteMany({
+        where: { userId: user.id },
+      });
 
-    const mailOptions = {
-      from: 'rhuan23032004@gmail.com',
+      return transaction.passowrdResetCode.create({
+        data: {
+          userId: user.id,
+          code: codeHash,
+          expiresAt: new Date(Date.now() + 1000 * 60 * 10),
+        },
+      });
+    });
+    resetCodeId = resetCode.is;
+
+    const { error } = await resend.emails.send({
+      from: env.RESEND_FROM_EMAIL,
       to: user.email,
-      subject: 'Redefinição de senha!',
-      text: 'Seu código para a redefinição da senha é: ' + code,
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-    return reply.status(200).send({
-      message: 'E-mail com o código para recuperação da senha enviado!',
-      info,
+      subject: 'Código para redefinir sua senha no N1Track',
+      text: `Seu código para redefinir a senha é ${code}. Ele expira em 10 minutos.`,
+      html: `<div style="font-family:Arial,sans-serif;color:#18181b"><h2>Redefinição de senha</h2><p>Use o código abaixo para criar uma nova senha no N1Track:</p><p style="font-size:32px;font-weight:700;letter-spacing:8px;margin:24px 0">${code}</p><p>O código expira em 10 minutos e só pode ser usado uma vez.</p><p>Se você não solicitou a troca, ignore este e-mail.</p></div>`,
     });
+
+    if (error) throw new Error(`Resend: ${error.message}`);
+
+    return reply.status(200).send({ message: successMessage });
   } catch (error) {
+    if (resetCodeId) {
+      await prisma.passowrdResetCode
+        .delete({ where: { is: resetCodeId } })
+        .catch(() => undefined);
+    }
+
+    request.log.error({ err: error }, 'Failed to send password reset email');
     return reply.status(500).send({
       message: 'Erro ao processar solicitação, tente novamente mais tarde!',
-      error,
     });
   }
 }
